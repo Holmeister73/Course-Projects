@@ -5,29 +5,11 @@ Created on Thu Jan 11 21:39:22 2024
 @author: USER
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Dec 31 19:48:09 2023
-
-@author: USER
-"""
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision
-import torchvision.transforms as transforms
-import matplotlib.pyplot as plt
 import numpy as np
-import pickle
-import PIL
-from sklearn.manifold import TSNE
-from torch.utils.data import random_split
-import torchvision.models as models
-from model import ResNet34, ResNet34_Pencil
-from torch.utils.data.sampler import SubsetRandomSampler
-from torch.utils.data import Dataset, DataLoader
-from torchvision import datasets
 from sklearn.decomposition import PCA
 
 device= torch.device("cuda" if torch.cuda.is_available() else "cpu")
