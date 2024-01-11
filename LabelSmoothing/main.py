@@ -396,11 +396,13 @@ def train_pencil(alpha, beta, Lambda, epochs, dataset = "cifar10", noise_level =
     for name, param in model.named_parameters():
          if name.startswith("learned_labels"):  
              param.requires_grad = False
+             
     optimizer = torch.optim.SGD(model.parameters(), lr = lrs[1], momentum = momentum, weight_decay = weight_decay)
     scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[int(epochs[2]/3), 2*int(epochs[2]/3)], gamma=0.1)
     
     for epoch in range(epochs[2]):
         AverageLoss=0
+        model.train()
         total_samples = 0
         for i,(images,labels, indices) in enumerate(train_loader):
             
@@ -495,10 +497,8 @@ def train_esls(alpha = 0.5, dataset = "cifar10", noise_level = 0, noise_type = "
             total_samples += images.size(0)
         if(epoch%5 == 4 and dataset != "cub200"):
             valid_accuracy, validloss = calculate_valid_acc(model, valid_loader)
-            print(epoch,valid_accuracy, validloss)
             if(valid_accuracy > best_valid_accuracy):
-                best_valid_accuracy = valid_accuracy
-        print(epoch, AverageLoss/total_samples)     
+                best_valid_accuracy = valid_accuracy    
         scheduler.step()
     avg_embeddings = calculate_class_embeddings(model, class_number, indiced_loader, dataset = dataset)
     
@@ -514,12 +514,8 @@ def train_esls(alpha = 0.5, dataset = "cifar10", noise_level = 0, noise_type = "
             images=images.to(device)
             labels=labels.to(device)
             predictions, embeddings = model(images)
-            #pca_embeddings = pca.transform(embeddings.cpu().detach().numpy())
-            #pca_embeddings = torch.from_numpy(pca_embeddings).to(device)
-            #cos_sims = pairwise_cosine_similarity(pca_embeddings, avg_embeddings)
             cos_sims = pairwise_cosine_similarity(embeddings, avg_embeddings)
-            if(i%100 == 0):
-                print(cos_sims[0])
+            
             soft_labels =  torch.nn.functional.softmax(cos_sims*temperature, dim = 1)
  
             normal_loss=loss_func(predictions,labels)
