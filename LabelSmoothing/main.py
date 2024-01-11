@@ -12,10 +12,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 import torchvision.transforms as transforms
-import matplotlib.pyplot as plt
 import numpy as np
 import pickle
-import PIL
 from sklearn.manifold import TSNE
 from torch.utils.data import random_split
 import torchvision.models as models
@@ -27,8 +25,6 @@ from extra_datasets import Cub200Dataset, Dataset_with_Indices
 from utils import one_hot_encode, margin_based_loss, soft_cross_entropy, cross_entropy_without_softmax, kl_loss, calculate_class_embeddings
 from utils import entropy, calculate_valid_acc, pencil_valid_acc, symmetric_new_label, make_noisy, manual_cross_entropy
 from torchmetrics.functional.pairwise import pairwise_cosine_similarity
-from torch.nn.utils import clip_grad_norm_ 
-import gc
 import math
 
 def train_default(dataset = "cifar10", noise_level = 0, noise_type = "symmetric", batch_size = 128, lr = 0.1, momentum = 0.9, weight_decay = 5e-4, epoch_number = 200):
@@ -373,9 +369,6 @@ def train_pencil(alpha, beta, Lambda, epochs, dataset = "cifar10", noise_level =
 
     for epoch in range(epochs[1]):
         AverageLoss=0
-        CompatibilityLoss = 0
-        ClassificationLoss = 0
-        EntropyLoss = 0
         model.train()
         total_samples = 0
         for i,(images,labels, indices) in enumerate(train_loader):
