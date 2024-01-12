@@ -5,12 +5,6 @@ Created on Thu Jan 11 21:47:30 2024
 @author: USER
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Nov 25 15:05:01 2023
-
-@author: USER
-"""
 
 import torch
 import torch.nn as nn

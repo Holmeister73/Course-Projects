@@ -5,13 +5,6 @@ Created on Thu Jan 11 21:40:48 2024
 @author: USER
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Dec 31 13:06:55 2023
-
-@author: USER
-"""
-
 
 
 import torch
