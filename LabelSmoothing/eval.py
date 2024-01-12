@@ -210,7 +210,7 @@ def fgsm_evaluate( model, dataset = "cifar10", method = "normal", epsilon = 0.1 
     
             perturbed_image_normalized = normalize(perturbed_image)
     
-            new_prediction, embedding = model(perturbed_image_normalized)
+            new_prediction, learned_label, log_label = model(perturbed_image_normalized, indice)
     
           
             _,new_predicted = torch.max(new_prediction,1) 
